@@ -1,0 +1,17 @@
+# Compiled Java class files
+*.class
+
+# Package Files
+*.jar
+*.war
+*.zip
+*.tar.gz
+
+# IDE specific folders (VS Code, Eclipse, IntelliJ)
+.vscode/
+bin/
+out/
+.idea/
+*.iml
+.project
+.classpath
