@@ -44,7 +44,7 @@ public class BattleEngine {
         cleanupDefeated(); //remove all dead combatants from the master list. 
         currentRound++;
     }
-    private void cleanupDefeated {
+    private void cleanupDefeated() {
         Iterator<Combatant> iterator = activeCombatants.iterator(); // gets an iterator to walk through the list one element at a time
         while (iterator.hasNext()) { //return true if no more elements
             if (iterator.next().isDefeated()) {

@@ -15,3 +15,6 @@ out/
 *.iml
 .project
 .classpath
+
+# macOS
+.DS_Store
