@@ -1,0 +1,24 @@
+package system;
+
+import domain.Combatant;
+import java.util.List;
+
+public class BasicAttackAction implmements Action{
+    @Override
+    public void execute(Combatant user, List<Combatant> targets){ //targets are chosen in boundary layer
+        //validate that target has been chosen
+        if (targets == null || targets.isEmpty()){
+            return;
+        }
+        Combatant target = targets.get(0);
+
+        int damage = Math.max(0, user.getAttack() - target.getDefense());
+
+        int oldHp = target.getHp();
+        target.takeDamage(damage);
+        int newHp = target.getHp();
+
+        System.out.printf("%s -> BasicAttack -> %s: HP: %d -> %d (dmg: %d-%d=%d)\n", user.getName(), targets.getName(), oldHp, newHp, user.getAttack(), target.getDefense(), damage)
+    }
+}
+
