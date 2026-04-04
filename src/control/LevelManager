@@ -1,0 +1,42 @@
+public class LevelManager {
+    private String difficulty;
+    private List<Enemy> enemyPool;
+    private List<Enemy> backupPool;
+    public List<Enemy> spawnInitialEnemies(){
+        if (difficulty.equals("Easy")) {
+            enemyPool.add(new Goblin());
+            enemyPool.add(new Goblin());
+            enemyPool.add(new Goblin());
+        }
+        else if (difficulty.equals("Medium")) {
+            enemyPool.add(new Goblin());
+            enemyPool.add(new Wolf());
+        }
+        else if (difficulty.equakls("Hard")) {
+            enemyPool.add(new Goblin());
+            enemyPool.add(new Goblin());
+        }
+        return enemyPool;
+    }
+    public List<Enemy> spawnBackupEnemies() {
+        if (difficulty.equals("Medium")) {
+            backupPool.add(new Wolf());
+            backupPool.add(new Wolf());
+        }
+        else if (difficulty.equals("Hard")) {
+            backupPool.add(new Goblin());
+            backupPool.add(new Wolf());
+            backupPool.add(new Wolf());
+        }
+        return backupPool;
+    }
+    public boolean isInitialWaveDefeated() {
+        boolean allDefeated = true;
+        for (Enemy enemy:enemyPool) {
+            if (not enemy.isdefeated()) {
+                alldefeated = false;
+            }
+        }
+        return allDefeated;
+    }
+}
