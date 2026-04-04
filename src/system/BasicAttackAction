@@ -7,18 +7,23 @@ public class BasicAttackAction implmements Action{
     @Override
     public void execute(Combatant user, List<Combatant> targets){ //targets are chosen in boundary layer
         //validate that target has been chosen
-        if (targets == null || targets.isEmpty()){
+        if (user == null || targets == null || targets.isEmpty()){
             return;
         }
+        //get target for basic attack
         Combatant target = targets.get(0);
+        if (target == null || target.isDefeated()){
+            return;
+        }
+        //calculate damage done to target after basic attack
+        int damage = Math.max(0, user.getAttack() - target.getDefense()); //ensure damage does not have negative value
 
-        int damage = Math.max(0, user.getAttack() - target.getDefense());
-
-        int oldHp = target.getHp();
+        //get HP value before and after attack
+        // int oldHp = target.getHp();
         target.takeDamage(damage);
-        int newHp = target.getHp();
+        // int newHp = Math.max(0, target.getHp()); //ensure minimum HP post-damage is 0
 
-        System.out.printf("%s -> BasicAttack -> %s: HP: %d -> %d (dmg: %d-%d=%d)\n", user.getName(), targets.getName(), oldHp, newHp, user.getAttack(), target.getDefense(), damage)
+        // System.out.printf("%s -> BasicAttack -> %s: HP: %d -> %d (dmg: %d-%d=%d)\n", user.getName(), targets.getName(), oldHp, newHp, user.getAttack(), target.getDefense(), damage)
     }
 }
 
