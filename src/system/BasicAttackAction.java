@@ -17,13 +17,7 @@ public class BasicAttackAction implmements Action{
         }
         //calculate damage done to target after basic attack
         int damage = Math.max(0, user.getAttack() - target.getDefense()); //ensure damage does not have negative value
-
-        //get HP value before and after attack
-        // int oldHp = target.getHp();
         target.takeDamage(damage);
-        // int newHp = Math.max(0, target.getHp()); //ensure minimum HP post-damage is 0
-
-        // System.out.printf("%s -> BasicAttack -> %s: HP: %d -> %d (dmg: %d-%d=%d)\n", user.getName(), targets.getName(), oldHp, newHp, user.getAttack(), target.getDefense(), damage)
-    }
+        }
 }
 
