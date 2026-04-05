@@ -3,12 +3,8 @@ package boundary;
 import java.util.Scanner;
 
 public class GameUISetup {
-    private final Scanner scanner_forGameUISetup;
-
-    public GameUISetup(Scanner scanner) {
-        scanner_forGameUISetup = scanner;
-    }
-    // assigns scanner object from main to GameUISetup obj
+    private final Scanner scanner_forGameUISetup = new Scanner(System.in);
+    //initialise new scanner obj
 
     private int ReadIntInRange(String prompt, int min, int max) {
         while (true) {
