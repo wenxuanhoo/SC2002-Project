@@ -3,9 +3,11 @@ package control;
 import domain.Combatant;
 import domain.Enemy;
 import domain.Player;
-import system.StatusEffect;
-import java.util.Scanner;
+import boundary.BattleUIProcess;
+import system.BasicAttackAction;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class BattleEngine {
     private List<Combatant> activeCombatants; // master list containing everyone still alive
     private TurnOrderStrategy turnStrategy; // strategy to decide turn order. Can be SpeedTurnOrder or other implementation.
     private int currentRound; // tracks the current round
+    private BattleUIProcess uiProcess = new BattleUIProcess(); // Add UI process
 
     public BattleEngine(List<Combatant> initialCombatants, TurnOrderStrategy strategy) {
         this.activeCombatants = new ArrayList<>(initialCombatants);
@@ -36,7 +39,12 @@ public class BattleEngine {
                 continue;
             }
             System.out.println("It is " + currentActor.getName() + "'s turn.");
-            currentActor.performTurn(activeCombatants);
+            
+            if (currentActor instanceof Player) {
+                handlePlayerTurn((Player) currentActor);
+            } else {
+                currentActor.performTurn(activeCombatants);
+            }
 
             currentActor.updateEffects(); // tick down effects after their turn
 
@@ -46,6 +54,50 @@ public class BattleEngine {
         }
         cleanupDefeated(); //remove all dead combatants from the master list. 
         currentRound++;
+    }
+
+    private void handlePlayerTurn(Player player) {
+        uiProcess.showPlayerStats(player.getName(), player.getHp(), player.getMaxHp(), player.getAttack(), player.getDefense(), player.getSpeed());
+        
+        List<Combatant> aliveEnemies = new ArrayList<>();
+        for (Combatant c : activeCombatants) {
+            if (c instanceof Enemy && !c.isDefeated()) {
+                aliveEnemies.add(c);
+            }
+        }
+        
+        int choice = uiProcess.chooseAction(player.hasItems(), player.isCoolDownReady(), player.getCooldownTimer());
+        
+        if (choice == 1) { // Basic Attack
+            if (aliveEnemies.isEmpty()) return;
+            
+            String[] enemyNames = new String[aliveEnemies.size()];
+            for (int i = 0; i < aliveEnemies.size(); i++) {
+                enemyNames[i] = aliveEnemies.get(i).getName() + " (HP: " + aliveEnemies.get(i).getHp() + ")";
+            }
+            uiProcess.showEnemies(enemyNames);
+            
+            int targetIdx = uiProcess.chooseTarget(aliveEnemies.size()) - 1;
+            Combatant target = aliveEnemies.get(targetIdx);
+            
+            new BasicAttackAction().execute(player, Collections.singletonList(target));
+            uiProcess.actionDisplayResult(player.getName() + " used Basic Attack on " + target.getName() + "!");
+        } else if (choice == 2) { // Defend
+             uiProcess.actionDisplayResult("Defend action not fully implemented yet.");
+        } else if (choice == 3) { // Use Item
+             if (player.hasItems()) {
+                 uiProcess.actionDisplayResult("Item usage not fully implemented in UI yet.");
+             } else {
+                 uiProcess.noItems();
+             }
+        } else if (choice == 4) { // Special Skill
+             if (player.isCoolDownReady()) {
+                 player.useSpecialSkill(activeCombatants);
+                 uiProcess.showPlayerSpecialSkill(player.getName(), "Special Skill");
+             } else {
+                 uiProcess.actionDisplayResult("Special skill is on cooldown!");
+             }
+        }
     }
     private void cleanupDefeated() {
         Iterator<Combatant> iterator = activeCombatants.iterator(); // gets an iterator to walk through the list one element at a time

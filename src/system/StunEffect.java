@@ -11,12 +11,12 @@ public class StunEffect implements StatusEffect{
 
     @Override
     public void applyEffect(Combatant target){
-        //no direct stats change here
+        target.setStunned(true); // Alter the target's actual state
     }
 
     @Override
     public void removeEffect(Combatant target){
-        //nothing to undo 
+        target.setStunned(false); // Revert the target's state when the effect expires
     }
 
     @Override

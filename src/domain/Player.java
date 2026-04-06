@@ -9,7 +9,7 @@ public abstract class Player extends Combatant {
     protected List<Item> inventory = new ArrayList<>();
     public void useItem(Item item, List<Combatant> combatants){
         if (inventory.contains(item)){
-            item.apply(this, combatants);
+            item.use(this, combatants); 
             inventory.remove(item);
         }
     }
@@ -20,6 +20,9 @@ public abstract class Player extends Combatant {
     }
     public boolean isCoolDownReady(){
         return cooldownTimer == 0;
+    }
+    public int getCooldownTimer() {
+        return cooldownTimer;
     }
     public boolean hasItems(){
         return !inventory.isEmpty();

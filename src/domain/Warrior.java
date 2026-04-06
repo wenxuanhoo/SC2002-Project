@@ -13,9 +13,8 @@ public class Warrior extends Player{
     }
     @Override
     public void performTurn(List<Combatant> combatants){
-        if (isStunned()){
-            System.out.println(name + "is stunned and skips the turn!");
-        }
+        // Player turns are now managed by the Controller (BattleEngine) via UI loops
+        // directly calling Action.execute(), decoupling Domain from Boundary!
     }
     @Override
     public void useSpecialSkill(List<Combatant> combatants){
