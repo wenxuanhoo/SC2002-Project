@@ -1,10 +1,13 @@
 package control;
 
 import domain.Combatant;
+import domain.Enemy;
+import domain.Player;
 import system.StatusEffect;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class BattleEngine {
     /**

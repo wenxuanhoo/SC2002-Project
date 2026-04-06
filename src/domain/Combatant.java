@@ -26,7 +26,10 @@ public abstract class Combatant{
     }
     public abstract void performTurn(List<Combatant> combatants);
     public void updateEffects(){
-        activeEffects.removeIf(effect -> effect.decrementDuration() <= 0);
+        activeEffects.removeIf(effect -> {
+            effect.decrementDuration();
+            return effect.isExpired();
+        });
     }
     public boolean isDefeated(){
         return this.hp <= 0;
