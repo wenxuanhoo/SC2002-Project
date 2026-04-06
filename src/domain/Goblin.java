@@ -1,6 +1,10 @@
 package domain;
 
 public class Goblin extends Enemy{
+    public Goblin() {
+        this("Goblin");
+    }
+    
     public Goblin(String name){
         this.name = name;
         this.maxHp = 55;
@@ -9,12 +13,4 @@ public class Goblin extends Enemy{
         this.defense = 15;
         this.speed = 25;
     }
-<<<<<<< HEAD
 }
-=======
-
-    public Goblin() {
-        this("Goblin");
-    }
-}
->>>>>>> e97a1e10d43a87501affa78d18f0a2ac2d2d661b
