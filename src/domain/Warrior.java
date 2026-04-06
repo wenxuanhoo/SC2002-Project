@@ -19,7 +19,7 @@ public class Warrior extends Player{
     }
     @Override
     public void useSpecialSkill(List<Combatant> combatants){
-        if (isCooldownReady()){
+        if (isCoolDownReady()){
             this.cooldownTimer = 3;
         }
     }

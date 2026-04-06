@@ -25,14 +25,14 @@ public abstract class Combatant{
         activeEffects.add(effect);
     }
     public abstract void performTurn(List<Combatant> combatants);
-    public void updateEffects();{
+    public void updateEffects(){
         activeEffects.removeIf(effect -> effect.decrementDuration() <= 0);
     }
     public boolean isDefeated(){
         return this.hp <= 0;
     }
     public boolean isStunned(){
-        return activeEffects.stream().anyMatch(e -> e.getName().equals("Stun"));
+        return activeEffects.stream().anyMatch(e -> e instanceof system.StunEffect);
     }
     public int getSpeed(){return speed;}
     public String getName(){return name;}

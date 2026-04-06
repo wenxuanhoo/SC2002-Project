@@ -1,11 +1,12 @@
 package domain;
 
 import java.util.List;
+import domain.Player;
 
 public abstract class Enemy extends Combatant{
     @Override
     public void performTurn(List<Combatant> combatants){
-        if (ifStunned()){
+        if (isStunned()){
             System.out.println(name + " is stunned and cannot act.");
             return;
         }

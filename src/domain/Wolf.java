@@ -9,4 +9,11 @@ public class Wolf extends Enemy{
         this.defense = 5;
         this.speed = 35;
     }
+<<<<<<< HEAD
+=======
+
+    public Wolf() {
+        this("Wolf");
+    }
+>>>>>>> e97a1e10d43a87501affa78d18f0a2ac2d2d661b
 }
