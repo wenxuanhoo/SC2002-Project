@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import system.Item;
 
 public abstract class Player extends Combatant {
     protected int cooldownTimer = 0;
