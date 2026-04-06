@@ -60,7 +60,8 @@ public class Main {
             engine.executeRound();
             
             if (engine.checkLossCondition()) {
-                System.out.println("Defeat! You have fallen in battle!");
+                int[] items = countItems(player);
+                uiProcess.showBattleResult(false, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2]);
                 break;
             }
             
@@ -71,10 +72,21 @@ public class Main {
                     engine.addCombatants(backups);
                     backupSpawned = true;
                 } else {
-                    System.out.println("Victory! All enemies defeated!");
+                    int[] items = countItems(player);
+                    uiProcess.showBattleResult(true, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2]);
                     break;
                 }
             }
         }
+    }
+
+    private static int[] countItems(Player player) {
+        int p = 0, s = 0, pw = 0;
+        for (Item item : player.getInventory()) {
+            if (item.getName().equals("Potion")) p++;
+            else if (item.getName().equals("Smoke Bomb")) s++;
+            else if (item.getName().equals("Power Stone")) pw++;
+        }
+        return new int[]{p, s, pw};
     }
 }

@@ -25,16 +25,16 @@ public class BattleUIProcess {
     }
     // displays turn order depending on the List of combatants
 
-    public void showPlayerStats(String player_name, int hp, int max_hp, int attack, int defense, int speed) {
+    public void showPlayerStats(String player_name, int hp, int maxHp, int attack, int defense, int speed, int potions, int smokeBombs, int cooldown, String enemyStats) {
         System.out.println("Player: " + player_name);
-        System.out.println("HP: " + hp + "/" + max_hp + " | Attack: " + attack + " | Defense: " + defense + " | Speed: " + speed);
+        System.out.println("HP: " + hp + "/" + maxHp + " | Attack: " + attack + " | Defense: " + defense + " | Speed: " + speed + " | Potion: " + potions + " | Smoke Bomb: " + smokeBombs + " | Special Skills Cooldown: " + cooldown + " Round(s)");
+        System.out.println(enemyStats);
         System.out.println("                                 ");
-
     }
     //displays player stats
 
     public void showEnemies(String[] enemy_info) {
-        System.out.print("Enemies: ");
+        System.out.println("Enemies: ");
         for (int i = 0; i < enemy_info.length; i += 1) {
             System.out.println((i + 1) + ". " + enemy_info[i]);
         }
@@ -93,7 +93,7 @@ public class BattleUIProcess {
         if (special_ready) {
             System.out.println("4. Special Skill (READY)");
         } else {
-            System.out.println("4. Special Skill (Cooldown: " + cooldown + " turns remaining.");
+            System.out.println("4. Special Skill (Cooldown: " + cooldown + " turns remaining.)");
         }
 
         System.out.println("                                  ");
@@ -103,12 +103,12 @@ public class BattleUIProcess {
     //displays option choices and proompts user to choose action
     
     public int chooseTarget(int enemy_count) {
-        return ReadIntInRange("Choose the target enemy: 1 to " + enemy_count + ".", 1, enemy_count);
+        return ReadIntInRange("Choose the target enemy (" + 1 + " to " + enemy_count + "): ", 1, enemy_count);
     }
     //choose the enemy target by number
 
     public int chooseItem(int item_count) {
-        return ReadIntInRange("Choose item: 1 to " + item_count + ".", 1, item_count);
+        return ReadIntInRange("Choose item (1 to " + item_count + "): ", 1, item_count);
     }
     //choose the item by number
 
@@ -160,18 +160,21 @@ public class BattleUIProcess {
     //displays UI for backup spawn
 
     public void showItemInventory(String[] item_names, int[] item_counts) {
-        System.out.print("Items: ");
+        System.out.println("Items: ");
         for (int i = 0; i < item_names.length; i += 1) {
-            if (i > 0) {
-                System.out.print(" | ");
-            }
             System.out.print(item_names[i] + ": " + item_counts[i]);
             if (item_counts[i] == 0) {
                 System.out.print(" (consumed) ");
             }
-        System.out.println("                                    ");
-
+            System.out.println();
         }
+        System.out.println("                                    ");
     }
     //displays available items from item list and item count list
+
+    public void showBattleResult(boolean isVictory, int hp, int maxHp, int rounds, int potions, int smokeBombs, int powerStones) {
+        String result = isVictory ? "Player Victory" : "Player Defeat";
+        System.out.println("Result: " + result + " | Remaining HP: " + hp + " / " + maxHp + " | Total Rounds: " + rounds + " | Remaining Potion: " + potions + " |");
+        System.out.println("Remaining Smoke Bomb: " + smokeBombs + " | Remaining Power Stone: " + powerStones);
+    }
 }

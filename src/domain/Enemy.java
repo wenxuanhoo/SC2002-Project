@@ -10,14 +10,15 @@ public abstract class Enemy extends Combatant{
             System.out.println(name + " is stunned and cannot act.");
             return;
         }
-        Combatant target = combatants.stream()
-            .filter(c -> c instanceof Player && !c.isDefeated())
+        Combatant player = combatants.stream()
+            .filter(c-> c instanceof Player)
             .findFirst()
             .orElse(null);
-        if (target != null){
-            int damage = Math.max(0, this.attack - target.getDefense());
-            target.takeDamage(damage);
-            System.out.println(name + " performs Basic Attack on " + target.getName() + " for " + damage + " damage ");
+
+        if (player != null && !player.isDefeated()){
+            int calcDamage = Math.max(0, this.attack - player.getDefense());
+            int actualDamage = player.takeDamage(calcDamage);
+            System.out.println(this.name + " attacks " + player.getName() + " for " + actualDamage + " damage!");
         }
     }
 }

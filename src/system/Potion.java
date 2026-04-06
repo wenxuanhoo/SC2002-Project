@@ -18,4 +18,8 @@ public class Potion implements Item{
     public String getName(){
         return "Potion";
     }
+    @Override
+    public boolean requiresEnemyTarget(Player user) {
+        return false;
+    }
 }

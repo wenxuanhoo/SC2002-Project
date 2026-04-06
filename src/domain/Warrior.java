@@ -16,25 +16,36 @@ public class Warrior extends Player{
         // Player turns are now managed by the Controller (BattleEngine) via UI loops
         // directly calling Action.execute(), decoupling Domain from Boundary!
     }
+    
+    @Override
+    public boolean isSpecialSkillAoE() {
+        return false;
+    }
+
+    private void performSpecialSkillLogic(List<Combatant> combatants) {
+        if (combatants != null && !combatants.isEmpty()) {
+            Combatant targetEnemy = combatants.get(0);
+            System.out.println(this.name + " uses Shield Bash on " + targetEnemy.getName() + "!");
+            shieldBash(targetEnemy);
+        } else {
+            System.out.println("No valid targets for Shield Bash.");
+        } 
+    }
+
     @Override
     public void useSpecialSkill(List<Combatant> combatants){
         if (isCoolDownReady()){
-            Combatant targetEnemy = combatants.stream()
-                .filter(c -> c instanceof Enemy && !c.isDefeated())
-                .findFirst()
-                .orElse(null);
-
-            if (targetEnemy != null) {
-                System.out.println(this.name + " uses Shield Bash on " + targetEnemy.getName() + "!");
-                shieldBash(targetEnemy);
-                
-                this.cooldownTimer = 3;
-            } else {
-                System.out.println("No valid targets for Shield Bahs.");
-            } 
+            performSpecialSkillLogic(combatants);
+            this.cooldownTimer = 3;
         } else {
             System.out.println("Special skill is on cooldown!");
         }
+    }
+    
+    @Override
+    public void forceSpecialSkill(List<Combatant> combatants) {
+        performSpecialSkillLogic(combatants);
+        // cooldownTimer is NOT reset here
     }
     private void shieldBash(Combatant target){
         int damage = Math.max(0, this.attack - target.getDefense());

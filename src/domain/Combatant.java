@@ -16,9 +16,18 @@ public abstract class Combatant{
     protected List<StatusEffect> activeEffects = new ArrayList<>();
     
     protected boolean isStunned = false; // State mutated by StatusEffects
+    protected boolean isInvulnerable = false;
 
-    public void takeDamage(int amount){
-        this.hp = Math.max(0, this.hp - amount);
+    public int takeDamage(int amount){
+        if (!isInvulnerable) {
+            int prevHp = this.hp;
+            this.hp = Math.max(0, this.hp - amount);
+            return prevHp - this.hp;
+        }
+        return 0;
+    }
+    public void setInvulnerable(boolean invulnerable) {
+        this.isInvulnerable = invulnerable;
     }
     public void heal(int amount){
         this.hp = Math.min(this.hp + amount, this.maxHp);
@@ -59,6 +68,7 @@ public abstract class Combatant{
     public String getName(){return name;}
     public int getAttack(){return attack;}
     public int getDefense(){return defense;}
+    public void setDefense(int defense){this.defense = defense;}
     public int getHp(){return hp;}
     public int getMaxHp(){return maxHp;}
 }

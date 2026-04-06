@@ -18,10 +18,18 @@ public abstract class Player extends Combatant {
             inventory.add(item);
         }
     }
+    public List<Item> getInventory() {
+        return inventory;
+    }
     public void reduceCooldown(){
         if (cooldownTimer > 0){
             cooldownTimer--;
         }
+    }
+    @Override
+    public void updateEffects() {
+        super.updateEffects();
+        reduceCooldown();
     }
     public boolean isCoolDownReady(){
         return cooldownTimer == 0;
@@ -33,4 +41,6 @@ public abstract class Player extends Combatant {
         return !inventory.isEmpty();
     }
     public abstract void useSpecialSkill(List<Combatant> combatants);
+    public abstract void forceSpecialSkill(List<Combatant> combatants);
+    public abstract boolean isSpecialSkillAoE();
 }

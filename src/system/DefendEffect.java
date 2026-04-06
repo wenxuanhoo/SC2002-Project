@@ -2,21 +2,23 @@ package system;
 
 import domain.Combatant;
 
-public class InvulnerabilityEffect implements StatusEffect{
+public class DefendEffect implements StatusEffect {
     private int remainingTurns;
-    
-    public InvulnerabilityEffect(int remainingTurns){
+
+    public DefendEffect(int remainingTurns) {
         this.remainingTurns = remainingTurns;
     }
 
     @Override
     public void applyEffect(Combatant target){
-        target.setInvulnerable(true);
+        // Add 10 to defense dynamically
+        target.setDefense(target.getDefense() + 10);
     }
     
     @Override
     public void removeEffect(Combatant target){
-        target.setInvulnerable(false);
+        // Ensure to remove the 10 defense when the timer expires
+        target.setDefense(target.getDefense() - 10);
     }
 
     @Override
@@ -31,6 +33,6 @@ public class InvulnerabilityEffect implements StatusEffect{
 
     @Override
     public boolean isExpired(){
-        return remainingTurns <= 0; //check if remaining turns is less than or equal to 0
+        return remainingTurns <= 0; 
     }
 }

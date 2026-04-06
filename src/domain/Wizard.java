@@ -22,15 +22,32 @@ public class Wizard extends Player{
     }
 
     @Override
+    public boolean isSpecialSkillAoE() {
+        return true;
+    }
+
+    private void performSpecialSkillLogic(List<Combatant> combatants) {
+        List<Combatant> enemies = combatants.stream()
+            .filter(c -> c instanceof Enemy && !c.isDefeated())
+            .collect(Collectors.toList());
+
+        arcaneBlast(enemies);
+    }
+
+    @Override
     public void useSpecialSkill(List<Combatant> combatants){
         if (isCoolDownReady()){
-            List<Combatant> enemies = combatants.stream()
-                .filter(c -> c instanceof Enemy && !c.isDefeated())
-                .collect(Collectors.toList());
-
-            arcaneBlast(enemies);
+            performSpecialSkillLogic(combatants);
             this.cooldownTimer = 3;
+        } else {
+            System.out.println("Special skill is on cooldown!");
         }
+    }
+    
+    @Override
+    public void forceSpecialSkill(List<Combatant> combatants) {
+        performSpecialSkillLogic(combatants);
+        // cooldownTimer is NOT reset here
     }
     private void arcaneBlast(List<Combatant> enemies){
         int currentAttack = this.attack + this.bonusAttack;

@@ -3,6 +3,7 @@ package control;
 import domain.Combatant;
 import domain.Enemy;
 import domain.Player;
+import system.Item;
 import boundary.BattleUIProcess;
 import system.BasicAttackAction;
 
@@ -16,12 +17,18 @@ public class BattleEngine {
      * Controller that manages a battle. Takes in a list of combatants and a strategy to determine turn order.
      */
     private List<Combatant> activeCombatants; // master list containing everyone still alive
+    private List<Enemy> trackedEnemies = new ArrayList<>(); // tracks all enemies encountered (even defeated)
     private TurnOrderStrategy turnStrategy; // strategy to decide turn order. Can be SpeedTurnOrder or other implementation.
     private int currentRound; // tracks the current round
     private BattleUIProcess uiProcess = new BattleUIProcess(); // Add UI process
 
     public BattleEngine(List<Combatant> initialCombatants, TurnOrderStrategy strategy) {
         this.activeCombatants = new ArrayList<>(initialCombatants);
+        for (Combatant c : initialCombatants) {
+            if (c instanceof Enemy) {
+                trackedEnemies.add((Enemy) c);
+            }
+        }
         this.turnStrategy = strategy;
         this.currentRound = 1;
     }
@@ -56,8 +63,25 @@ public class BattleEngine {
         currentRound++;
     }
 
+    private List<Combatant> promptForTarget(List<Combatant> aliveEnemies) {
+        if (aliveEnemies.isEmpty()) return Collections.emptyList();
+        
+        String[] enemyNames = new String[aliveEnemies.size()];
+        for (int i = 0; i < aliveEnemies.size(); i++) {
+            enemyNames[i] = aliveEnemies.get(i).getName() + " (HP: " + aliveEnemies.get(i).getHp() + ")";
+        }
+        uiProcess.showEnemies(enemyNames);
+        
+        int targetIdx = uiProcess.chooseTarget(aliveEnemies.size()) - 1;
+        return Collections.singletonList(aliveEnemies.get(targetIdx));
+    }
+
     private void handlePlayerTurn(Player player) {
-        uiProcess.showPlayerStats(player.getName(), player.getHp(), player.getMaxHp(), player.getAttack(), player.getDefense(), player.getSpeed());
+        int potions = 0, smokeBombs = 0;
+        for (Item item : player.getInventory()) {
+            if (item.getName().equals("Potion")) potions++;
+            else if (item.getName().equals("Smoke Bomb")) smokeBombs++;
+        }
         
         List<Combatant> aliveEnemies = new ArrayList<>();
         for (Combatant c : activeCombatants) {
@@ -66,37 +90,65 @@ public class BattleEngine {
             }
         }
         
-        int choice = uiProcess.chooseAction(player.hasItems(), player.isCoolDownReady(), player.getCooldownTimer());
+        uiProcess.showPlayerStats(player.getName(), player.getHp(), player.getMaxHp(), player.getAttack(), player.getDefense(), player.getSpeed(), potions, smokeBombs, player.getCooldownTimer(), getEnemyStatusString());
         
-        if (choice == 1) { // Basic Attack
-            if (aliveEnemies.isEmpty()) return;
+        boolean actionCompleted = false;
+        
+        while (!actionCompleted) {
+            int choice = uiProcess.chooseAction(player.hasItems(), player.isCoolDownReady(), player.getCooldownTimer());
             
-            String[] enemyNames = new String[aliveEnemies.size()];
-            for (int i = 0; i < aliveEnemies.size(); i++) {
-                enemyNames[i] = aliveEnemies.get(i).getName() + " (HP: " + aliveEnemies.get(i).getHp() + ")";
+            if (choice == 1) { // Basic Attack
+                List<Combatant> targets = promptForTarget(aliveEnemies);
+                if (targets.isEmpty()) continue;
+                
+                new BasicAttackAction().execute(player, targets);
+                uiProcess.actionDisplayResult(player.getName() + " used Basic Attack on " + targets.get(0).getName() + "!");
+                actionCompleted = true;
+            } else if (choice == 2) { // Defend
+                 new system.DefendAction().execute(player, null);
+                 uiProcess.actionDisplayResult(player.getName() + " is defending! (+10 Defense)");
+                 actionCompleted = true;
+            } else if (choice == 3) { // Use Item
+                 if (player.hasItems()) {
+                     List<Item> inv = player.getInventory();
+                     String[] itemNames = new String[inv.size()];
+                     int[] itemCounts = new int[inv.size()];
+                     for (int i = 0; i < inv.size(); i++) {
+                         itemNames[i] = (i + 1) + ") " + inv.get(i).getName();
+                         itemCounts[i] = 1;
+                     }
+                     uiProcess.showItemInventory(itemNames, itemCounts);
+                     
+                     int itemIdx = uiProcess.chooseItem(inv.size()) - 1;
+                     Item chosen = inv.get(itemIdx);
+                     
+                     List<Combatant> targetsToPass = activeCombatants;
+                     if (chosen.requiresEnemyTarget(player)) {
+                         targetsToPass = promptForTarget(aliveEnemies);
+                         if (targetsToPass.isEmpty()) continue;
+                     }
+                     
+                     player.useItem(chosen, targetsToPass);
+                     uiProcess.actionDisplayResult(player.getName() + " used " + chosen.getName() + "!");
+                     actionCompleted = true;
+                 } else {
+                     uiProcess.noItems();
+                 }
+            } else if (choice == 4) { // Special Skill
+                 if (player.isCoolDownReady()) {
+                     List<Combatant> targetsToPass = activeCombatants;
+                     if (!player.isSpecialSkillAoE()) {
+                         targetsToPass = promptForTarget(aliveEnemies);
+                         if (targetsToPass.isEmpty()) continue;
+                     }
+                     
+                     player.useSpecialSkill(targetsToPass);
+                     uiProcess.showPlayerSpecialSkill(player.getName(), "Special Skill");
+                     actionCompleted = true;
+                 } else {
+                     uiProcess.actionDisplayResult("Special skill is on cooldown!");
+                 }
             }
-            uiProcess.showEnemies(enemyNames);
-            
-            int targetIdx = uiProcess.chooseTarget(aliveEnemies.size()) - 1;
-            Combatant target = aliveEnemies.get(targetIdx);
-            
-            new BasicAttackAction().execute(player, Collections.singletonList(target));
-            uiProcess.actionDisplayResult(player.getName() + " used Basic Attack on " + target.getName() + "!");
-        } else if (choice == 2) { // Defend
-             uiProcess.actionDisplayResult("Defend action not fully implemented yet.");
-        } else if (choice == 3) { // Use Item
-             if (player.hasItems()) {
-                 uiProcess.actionDisplayResult("Item usage not fully implemented in UI yet.");
-             } else {
-                 uiProcess.noItems();
-             }
-        } else if (choice == 4) { // Special Skill
-             if (player.isCoolDownReady()) {
-                 player.useSpecialSkill(activeCombatants);
-                 uiProcess.showPlayerSpecialSkill(player.getName(), "Special Skill");
-             } else {
-                 uiProcess.actionDisplayResult("Special skill is on cooldown!");
-             }
         }
     }
     private void cleanupDefeated() {
@@ -126,7 +178,24 @@ public class BattleEngine {
 
     public void addCombatants(List<? extends Combatant> newCombatants) {
         this.activeCombatants.addAll(newCombatants);
+        for (Combatant c : newCombatants) {
+            if (c instanceof Enemy) {
+                trackedEnemies.add((Enemy) c);
+            }
+        }
+    }
+    public int getCurrentRound() {
+        return currentRound;
     }
 
-
+    public String getEnemyStatusString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < trackedEnemies.size(); i++) {
+            sb.append(trackedEnemies.get(i).getName()).append(" HP: ").append(trackedEnemies.get(i).getHp());
+            if (i < trackedEnemies.size() - 1) {
+                sb.append(" | ");
+            }
+        }
+        return sb.toString();
+    }
 }
