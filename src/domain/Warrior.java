@@ -20,12 +20,26 @@ public class Warrior extends Player{
     @Override
     public void useSpecialSkill(List<Combatant> combatants){
         if (isCoolDownReady()){
-            this.cooldownTimer = 3;
+            Combatant targetEnemy = combatants.stream()
+                .filter(c -> c instanceof Enemy && !c.isDefeated())
+                .findFirst()
+                .orElse(null);
+
+            if (targetEnemy != null) {
+                System.out.println(this.name + " uses Shield Bash on " + targetEnemy.getName() + "!");
+                shieldBash(targetEnemy);
+                
+                this.cooldownTimer = 3;
+            } else {
+                System.out.println("No valid targets for Shield Bahs.");
+            } 
+        } else {
+            System.out.println("Special skill is on cooldown!");
         }
     }
     private void shieldBash(Combatant target){
         int damage = Math.max(0, this.attack - target.getDefense());
         target.takeDamage(damage);
-        target.addEffect(new StatusEffect("Stun", 2));
+        target.addEffect(new system.StunEffect(2));
     }
 }
