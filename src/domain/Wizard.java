@@ -14,12 +14,20 @@ public class Wizard extends Player{
         this.speed = 20;
 
     }
+
+    @Override
+    public void performTurn(List<Combatant> combatants){
+        if (isStunned()){
+            System.out.println(name + "is stunned and skips the turn!");
+        }
+    }
+
     @Override
     public void useSpecialSkill(List<Combatant> combatants){
-        if (isCooldownReady()){
-            List<Combatant> enemies = combatants.stream();
-                filter(c -> c instanceof Enemy && !c.isDefeated());
-                collect(Collectors.toList());
+        if (isCoolDownReady()){
+            List<Combatant> enemies = combatants.stream()
+                .filter(c -> c instanceof Enemy && !c.isDefeated())
+                .collect(Collectors.toList());
 
             arcaneBlast(enemies);
             this.cooldownTimer = 3;
@@ -27,12 +35,12 @@ public class Wizard extends Player{
     }
     private void arcaneBlast(List<Combatant> enemies){
         int currentAttack = this.attack + this.bonusAttack;
-        for (Combatant enermy : enemies){
-            int damage = Math.max(0, currentAttack - enermy.getDefense());
+        for (Combatant enemy : enemies){
+            int damage = Math.max(0, currentAttack - enemy.getDefense());
             enemy.takeDamage(damage);
             if (enemy.isDefeated()){
                 this.bonusAttack += 10;
-                System.out.println("Arcane Blast defeated " + enemy.getName() +"!Wizard Attack + 10.");
+                System.out.println("Arcane Blast defeated " + enemy.getName() +"! Wizard Attack + 10.");
             }
         }
     }
