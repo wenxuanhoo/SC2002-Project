@@ -3,7 +3,7 @@ package system;
 import domain.Combatant;
 import java.util.List;
 
-public class BasicAttackAction implmements Action{
+public class BasicAttackAction implements Action{
     @Override
     public void execute(Combatant user, List<Combatant> targets){ //targets are chosen in boundary layer
         //validate that target has been chosen
