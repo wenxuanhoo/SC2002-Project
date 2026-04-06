@@ -1,3 +1,9 @@
+package control;
+import java.util.List;
+import domain.Enemy;
+import domain.Goblin;
+import domain.Wolf;
+
 public class LevelManager {
     private String difficulty;
     private List<Enemy> enemyPool;
@@ -12,7 +18,7 @@ public class LevelManager {
             enemyPool.add(new Goblin());
             enemyPool.add(new Wolf());
         }
-        else if (difficulty.equakls("Hard")) {
+        else if (difficulty.equals("Hard")) {
             enemyPool.add(new Goblin());
             enemyPool.add(new Goblin());
         }
@@ -33,8 +39,8 @@ public class LevelManager {
     public boolean isInitialWaveDefeated() {
         boolean allDefeated = true;
         for (Enemy enemy:enemyPool) {
-            if (not enemy.isdefeated()) {
-                alldefeated = false;
+            if (!enemy.isDefeated()) {
+                allDefeated = false;
             }
         }
         return allDefeated;
