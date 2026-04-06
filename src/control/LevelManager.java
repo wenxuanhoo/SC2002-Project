@@ -6,8 +6,8 @@ import domain.Wolf;
 
 public class LevelManager {
     private String difficulty;
-    private List<Enemy> enemyPool;
-    private List<Enemy> backupPool;
+    private List<Enemy> enemyPool = new java.util.ArrayList<>();
+    private List<Enemy> backupPool = new java.util.ArrayList<>();
     public List<Enemy> spawnInitialEnemies(){
         if (difficulty.equals("Easy")) {
             enemyPool.add(new Goblin());
