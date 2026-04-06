@@ -1,9 +1,8 @@
 package system;
 
 import domain.Combatant;
-import domain.Warrior;
-import domain.Wizard;
 import java.util.List;
+import domain.Player;
 
 public class SpecialSkillAction implements Action{
     @Override
