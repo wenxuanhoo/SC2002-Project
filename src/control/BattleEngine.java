@@ -113,7 +113,6 @@ public class BattleEngine {
                 return false; // returns false if even one instance of enemy. otherwise c will continue to loop through activeCombatants
             }
         }
-        System.out.println("Victory! All enemies defeated!");
         return true;
     }
     public boolean checkLossCondition() {
@@ -122,8 +121,11 @@ public class BattleEngine {
                 return false; //returns false if even one instance of player
             }
         }
-        System.out.println("Defeat! You have fallen in battle!");
         return true;
+    }
+
+    public void addCombatants(List<? extends Combatant> newCombatants) {
+        this.activeCombatants.addAll(newCombatants);
     }
 
 

@@ -13,6 +13,11 @@ public abstract class Player extends Combatant {
             inventory.remove(item);
         }
     }
+    public void addItem(Item item) {
+        if (item != null) {
+            inventory.add(item);
+        }
+    }
     public void reduceCooldown(){
         if (cooldownTimer > 0){
             cooldownTimer--;

@@ -8,6 +8,11 @@ public class LevelManager {
     private String difficulty;
     private List<Enemy> enemyPool = new java.util.ArrayList<>();
     private List<Enemy> backupPool = new java.util.ArrayList<>();
+    
+    public LevelManager(String difficulty) {
+        this.difficulty = difficulty;
+    }
+    
     public List<Enemy> spawnInitialEnemies(){
         if (difficulty.equals("Easy")) {
             enemyPool.add(new Goblin());
