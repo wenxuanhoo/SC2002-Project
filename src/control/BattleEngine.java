@@ -54,12 +54,12 @@ public class BattleEngine {
             }
 
             currentActor.updateEffects(); // tick down effects after their turn
+            cleanupDefeated(); // check for any immediate eliminations after end of turn
 
             if (checkWinCondition() || checkLossCondition()) { // check if the battle is over, i.e. if all enemies are dead or all allies dead
                 break;
             }
         }
-        cleanupDefeated(); //remove all dead combatants from the master list. 
         currentRound++;
     }
 
@@ -154,10 +154,21 @@ public class BattleEngine {
     private void cleanupDefeated() {
         Iterator<Combatant> iterator = activeCombatants.iterator(); // gets an iterator to walk through the list one element at a time
         while (iterator.hasNext()) { //return true if no more elements
-            if (iterator.next().isDefeated()) {
+            Combatant c = iterator.next();
+            if (c.isDefeated()) {
+                uiProcess.showElim(c.getName());
                 iterator.remove();
             }
         }
+    }
+    public int getAliveEnemyCount() {
+        int count = 0;
+        for (Combatant c : activeCombatants) {
+            if (c instanceof Enemy && !c.isDefeated()) {
+                count++;
+            }
+        }
+        return count;
     }
     public boolean checkWinCondition() {
         for (Combatant c : activeCombatants) {

@@ -125,7 +125,7 @@ public class BattleUIProcess {
     //displays that a combatant is stunned
 
     public void showElim(String name) {
-        System.out.println(name + " is ELIMINATED, gg");
+        System.out.println(name + " is ELIMINATED!");
         System.out.println("                                   ");
     }
     //displays that a combatant is eliminated
@@ -172,9 +172,22 @@ public class BattleUIProcess {
     }
     //displays available items from item list and item count list
 
-    public void showBattleResult(boolean isVictory, int hp, int maxHp, int rounds, int potions, int smokeBombs, int powerStones) {
-        String result = isVictory ? "Player Victory" : "Player Defeat";
-        System.out.println("Result: " + result + " | Remaining HP: " + hp + " / " + maxHp + " | Total Rounds: " + rounds + " | Remaining Potion: " + potions + " |");
-        System.out.println("Remaining Smoke Bomb: " + smokeBombs + " | Remaining Power Stone: " + powerStones);
+    public void showBattleResult(boolean isVictory, int hp, int maxHp, int rounds, int potions, int smokeBombs, int powerStones, int enemiesRemaining) {
+        if (isVictory) {
+            System.out.println("Congratulations, you have defeated all your enemies.");
+            System.out.println("Statistics: Remaining HP: " + hp + " / " + maxHp + " | Total Rounds: " + rounds);
+        } else {
+            System.out.println("Defeated. Don't give up, try again!");
+            System.out.println("Statistics: Enemies remaining: " + enemiesRemaining + " | Total Rounds Survived: " + rounds);
+        }
+        System.out.println("Remaining Potion: " + potions + " | Remaining Smoke Bomb: " + smokeBombs + " | Remaining Power Stone: " + powerStones);
+        System.out.println("                                   ");
+    }
+
+    public int chooseEndGameOption() {
+        System.out.println("1. Replay with the same settings");
+        System.out.println("2. Start a new game (return to the home screen)");
+        System.out.println("3. Exit");
+        return ReadIntInRange("Choose option (1-3): ", 1, 3);
     }
 }
