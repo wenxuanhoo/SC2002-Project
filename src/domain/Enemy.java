@@ -16,8 +16,12 @@ public abstract class Enemy extends Combatant{
             .orElse(null);
 
         if (player != null && !player.isDefeated()){
-            int calcDamage = Math.max(0, this.attack - player.getDefense());
-            int actualDamage = player.takeDamage(calcDamage);
+            int initialHp = player.getHp(); // Store initial HP to calculate damage later
+            
+            // Delegate the attack to the shared BasicAttackAction for extensibility
+            new system.BasicAttackAction().execute(this, java.util.Collections.singletonList(player));
+            
+            int actualDamage = initialHp - player.getHp(); // Calculate damage dealt
             System.out.println(this.name + " attacks " + player.getName() + " for " + actualDamage + " damage!");
         }
     }
