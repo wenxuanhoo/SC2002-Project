@@ -1,5 +1,6 @@
 import boundary.GameUISetup;
 import boundary.BattleUIProcess;
+import boundary.GameResultUI;
 import control.BattleEngine;
 import control.LevelManager;
 import control.SpeedTurnOrder;
@@ -19,7 +20,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         GameUISetup setup = new GameUISetup();
-        BattleUIProcess uiProcess = new BattleUIProcess();
+        GameResultUI ResultUI = new GameResultUI();
+        BattleUIProcess battleUI = new BattleUIProcess();
         
         int playerChoice = 0;
         int[] itemChoices = null;
@@ -62,34 +64,32 @@ public class Main {
             
             boolean backupSpawned = false;
             
-            System.out.println("\n==================================");
-            System.out.println("          BATTLE START!           ");
-            System.out.println("==================================\n");
+            battleUI.showBattleStart();
             
             while (true) {
                 engine.executeRound();
                 
                 if (engine.checkLossCondition()) {
                     int[] items = countItems(player);
-                    uiProcess.showBattleResult(false, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2], engine.getAliveEnemyCount());
+                    ResultUI.showBattleResult(false, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2], engine.getAliveEnemyCount());
                     break;
                 }
                 
                 if (engine.checkWinCondition()) {
                     if (!backupSpawned && (diffString.equals("Medium") || diffString.equals("Hard"))) {
-                        uiProcess.showEnemyBackup();
+                        battleUI.showEnemyBackup();
                         List<Enemy> backups = levelManager.spawnBackupEnemies();
                         engine.addCombatants(backups);
                         backupSpawned = true;
                     } else {
                         int[] items = countItems(player);
-                        uiProcess.showBattleResult(true, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2], engine.getAliveEnemyCount());
+                        ResultUI.showBattleResult(true, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2], engine.getAliveEnemyCount());
                         break;
                     }
                 }
             }
 
-            int option = uiProcess.chooseEndGameOption();
+            int option = ResultUI.chooseEndGameOption();
             if (option == 1) {
                 replaySameSettings = true;
             } else if (option == 2) {
