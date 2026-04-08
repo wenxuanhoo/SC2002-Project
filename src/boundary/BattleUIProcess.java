@@ -6,6 +6,24 @@ public class BattleUIProcess {
     private final Scanner sc = new Scanner(System.in);
     //initialise new Scanner object
 
+        private int ReadIntInRange(String prompt, int min, int max) {
+        while (true) {
+            System.out.print(prompt);
+            String line = sc.nextLine().trim();
+
+            try {
+                int input = Integer.parseInt(line);
+                if (input >= min && input <= max) {
+                    return input;
+                }
+                System.out.println("Invalid number. Enter a number between " + min + " and " + max + '.');
+            } catch (NumberFormatException exception) {
+                System.out.println("Invalid number. Please enter an ACTUAL number.");
+            }
+        } 
+    } 
+    //copied from GameUISetup class, used locally under BattleUIProcess class
+
     public void showRounds(int round_number) {
         System.out.println("-------ROUND " + round_number + "-------");
     }
@@ -20,7 +38,7 @@ public class BattleUIProcess {
             }
             System.out.print(combatant_names[i]);
         }
-        System.out.println("                                 ");
+        System.out.println();
 
     }
     // displays turn order depending on the List of combatants
@@ -29,7 +47,7 @@ public class BattleUIProcess {
         System.out.println("Player: " + player_name);
         System.out.println("HP: " + hp + "/" + maxHp + " | Attack: " + attack + " | Defense: " + defense + " | Speed: " + speed + " | Potion: " + potions + " | Smoke Bomb: " + smokeBombs + " | Special Skills Cooldown: " + cooldown + " Round(s)");
         System.out.println(enemyStats);
-        System.out.println("                                 ");
+
     }
     //displays player stats
 
@@ -38,7 +56,7 @@ public class BattleUIProcess {
         for (int i = 0; i < enemy_info.length; i += 1) {
             System.out.println((i + 1) + ". " + enemy_info[i]);
         }
-        System.out.println("                                 ");
+        System.out.println();
 
     }
     //displays Enemies information line by line
@@ -60,24 +78,6 @@ public class BattleUIProcess {
         }
     }
     //display status effects if any
-
-    private int ReadIntInRange(String prompt, int min, int max) {
-        while (true) {
-            System.out.print(prompt);
-            String line = sc.nextLine().trim();
-
-            try {
-                int input = Integer.parseInt(line);
-                if (input >= min && input <= max) {
-                    return input;
-                }
-                System.out.println("Invalid number. Enter a number between " + min + " and " + max + '.');
-            } catch (NumberFormatException exception) {
-                System.out.println("Invalid number. Please enter an ACTUAL number.");
-            }
-        } 
-    } 
-    //copied from GameUISetup class, used locally under BattleUIProcess class
 
     public int chooseAction(boolean has_items, boolean special_ready, int cooldown) {
         System.out.println("Choose actions: ");
@@ -172,22 +172,4 @@ public class BattleUIProcess {
     }
     //displays available items from item list and item count list
 
-    public void showBattleResult(boolean isVictory, int hp, int maxHp, int rounds, int potions, int smokeBombs, int powerStones, int enemiesRemaining) {
-        if (isVictory) {
-            System.out.println("Congratulations, you have defeated all your enemies.");
-            System.out.println("Statistics: Remaining HP: " + hp + " / " + maxHp + " | Total Rounds: " + rounds);
-        } else {
-            System.out.println("Defeated. Don't give up, try again!");
-            System.out.println("Statistics: Enemies remaining: " + enemiesRemaining + " | Total Rounds Survived: " + rounds);
-        }
-        System.out.println("Remaining Potion: " + potions + " | Remaining Smoke Bomb: " + smokeBombs + " | Remaining Power Stone: " + powerStones);
-        System.out.println("                                   ");
-    }
-
-    public int chooseEndGameOption() {
-        System.out.println("1. Replay with the same settings");
-        System.out.println("2. Start a new game (return to the home screen)");
-        System.out.println("3. Exit");
-        return ReadIntInRange("Choose option (1-3): ", 1, 3);
-    }
 }
