@@ -74,7 +74,7 @@ public class BattleUIProcess {
             if (isInvulnerable) {
                 System.out.println("Smoke Bomb active - immune to damage");
             }
-            System.out.println("                                   ");
+            System.out.println();
         }
     }
     //display status effects if any
@@ -114,25 +114,25 @@ public class BattleUIProcess {
 
     public void actionDisplayResult(String actionMessage) {
         System.out.println(actionMessage);
-        System.out.println("                                   ");
+        System.out.println();
     }
     //displays whatever action that you want to specify
 
     public void displayStunned(String name) {
         System.out.println(name + " is STUNNED, turn skipped!!");
-        System.out.println("                                   ");
+        System.out.println();
     }
     //displays that a combatant is stunned
 
     public void showElim(String name) {
         System.out.println(name + " is ELIMINATED!");
-        System.out.println("                                   ");
+        System.out.println();
     }
     //displays that a combatant is eliminated
 
     public void noItems() {
         System.out.println("You have no items remaining");
-        System.out.println("                                   ");
+        System.out.println();
     }
     //displays you no items and broke
 
