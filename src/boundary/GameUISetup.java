@@ -3,13 +3,13 @@ package boundary;
 import java.util.Scanner;
 
 public class GameUISetup {
-    private final Scanner scanner_forGameUISetup = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
     //initialise new scanner obj
 
     private int ReadIntInRange(String prompt, int min, int max) {
         while (true) {
             System.out.print(prompt);
-            String line = scanner_forGameUISetup.nextLine().trim();
+            String line = sc.nextLine().trim();
 
             try {
                 int input = Integer.parseInt(line);
