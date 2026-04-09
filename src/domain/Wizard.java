@@ -7,7 +7,7 @@ public class Wizard extends Player{
     private int bonusAttack = 0;
     public Wizard(String name){
         this.name = name;
-        this.maxHp = 260;
+        this.maxHp = 200;
         this.hp = 200;
         this.attack = 50;
         this.defense = 10;
