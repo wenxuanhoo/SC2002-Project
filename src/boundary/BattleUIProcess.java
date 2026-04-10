@@ -99,20 +99,10 @@ public class BattleUIProcess {
     }
     //displays you no items and broke
 
-    public void showPlayerAttack(String playerName, String actionName, String enemyName, int damage) {
-        System.out.println(playerName + " has used " + actionName + " on " + enemyName + ", dealing " + damage + " damage!");
-    }
-    //displays player attack 
-
     public void showPlayerSpecialSkill(String playerName, String specialSkill) {
         System.out.println(playerName + " has used " + specialSkill + "!!!");
     }
     //displays player using special skill
-
-    public void showEnemyAttack(String enemyName, String actionName, String playerName, int damage) {
-        System.out.println(enemyName + " has used " + actionName + " on " + playerName + ", dealing " + damage + " damage!");
-    }
-    //displays enemy using normal attack
 
     public void showEnemyBackup() {
         System.out.println("--------------------------------");
