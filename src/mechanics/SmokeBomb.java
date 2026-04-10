@@ -1,4 +1,4 @@
-package system;
+package mechanics;
 
 import domain.Combatant;
 import domain.Player;
@@ -14,6 +14,7 @@ public class SmokeBomb implements Item{
             return;
         }
         
+        user.removeEffectsOfType(InvulnerabilityEffect.class);
         user.addEffect(new InvulnerabilityEffect(DURATION));
     }
     @Override

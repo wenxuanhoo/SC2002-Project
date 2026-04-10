@@ -1,4 +1,4 @@
-package system;
+package mechanics;
 
 import java.util.List;
 import domain.Combatant;

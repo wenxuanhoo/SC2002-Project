@@ -9,10 +9,10 @@ import domain.Warrior;
 import domain.Wizard;
 import domain.Combatant;
 import domain.Enemy;
-import system.Item;
-import system.Potion;
-import system.PowerStone;
-import system.SmokeBomb;
+import mechanics.Item;
+import mechanics.Potion;
+import mechanics.PowerStone;
+import mechanics.SmokeBomb;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         GameUISetup setup = new GameUISetup();
-        GameResultUI ResultUI = new GameResultUI();
+        GameResultUI resultUI = new GameResultUI();
         BattleUIProcess battleUI = new BattleUIProcess();
         
         int playerChoice = 0;
@@ -71,7 +71,7 @@ public class Main {
                 
                 if (engine.checkLossCondition()) {
                     int[] items = countItems(player);
-                    ResultUI.showBattleResult(false, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2], engine.getAliveEnemyCount());
+                    resultUI.showBattleResult(false, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2], engine.getAliveEnemyCount());
                     break;
                 }
                 
@@ -83,13 +83,13 @@ public class Main {
                         backupSpawned = true;
                     } else {
                         int[] items = countItems(player);
-                        ResultUI.showBattleResult(true, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2], engine.getAliveEnemyCount());
+                        resultUI.showBattleResult(true, player.getHp(), player.getMaxHp(), engine.getCurrentRound(), items[0], items[1], items[2], engine.getAliveEnemyCount());
                         break;
                     }
                 }
             }
 
-            int option = ResultUI.chooseEndGameOption();
+            int option = resultUI.chooseEndGameOption();
             if (option == 1) {
                 replaySameSettings = true;
             } else if (option == 2) {

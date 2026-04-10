@@ -12,9 +12,10 @@ public class Warrior extends Player{
         this.speed = 30;
     }
     @Override
-    public void performTurn(List<Combatant> combatants){
+    public String performTurn(List<Combatant> combatants){
         // Player turns are now managed by the Controller (BattleEngine) via UI loops
         // directly calling Action.execute(), decoupling Domain from Boundary!
+        return "";
     }
     
     @Override
@@ -22,34 +23,19 @@ public class Warrior extends Player{
         return false;
     }
 
-    private void performSpecialSkillLogic(List<Combatant> combatants) {
-        if (combatants != null && !combatants.isEmpty()) {
-            Combatant targetEnemy = combatants.get(0);
-            System.out.println(this.name + " uses Shield Bash on " + targetEnemy.getName() + "!");
-            shieldBash(targetEnemy);
-        } else {
-            System.out.println("No valid targets for Shield Bash.");
-        } 
-    }
-
     @Override
-    public void useSpecialSkill(List<Combatant> combatants){
+    public String useSpecialSkill(List<Combatant> combatants){
         if (isCoolDownReady()){
-            performSpecialSkillLogic(combatants);
+            String result = new mechanics.ShieldBashAction().execute(this, combatants);
             this.cooldownTimer = 3;
+            return result;
         } else {
-            System.out.println("Special skill is on cooldown!");
+            return "Special skill is on cooldown!";
         }
     }
     
     @Override
-    public void forceSpecialSkill(List<Combatant> combatants) {
-        performSpecialSkillLogic(combatants);
-        // cooldownTimer is NOT reset here
-    }
-    private void shieldBash(Combatant target){
-        int damage = Math.max(0, this.attack - target.getDefense());
-        target.takeDamage(damage);
-        target.addEffect(new system.StunEffect(2));
+    public String forceSpecialSkill(List<Combatant> combatants) {
+        return new mechanics.ShieldBashAction().execute(this, combatants);
     }
 }

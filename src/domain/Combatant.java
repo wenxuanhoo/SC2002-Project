@@ -3,7 +3,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import system.StatusEffect;
+import mechanics.StatusEffect;
 
 
 public abstract class Combatant{
@@ -15,8 +15,8 @@ public abstract class Combatant{
     protected int speed;
     protected List<StatusEffect> activeEffects = new ArrayList<>();
     
-    protected boolean isStunned = false; // State mutated by StatusEffects
-    protected boolean isInvulnerable = false;
+    private boolean isStunned = false; // State mutated by StatusEffects
+    private boolean isInvulnerable = false;
 
     public int takeDamage(int amount){
         if (!isInvulnerable) {
@@ -38,7 +38,17 @@ public abstract class Combatant{
         effect.applyEffect(this); // Tell the effect to alter the Combatant's stats/state
     }
     
-    public abstract void performTurn(List<Combatant> combatants);
+    public abstract String performTurn(List<Combatant> combatants);
+
+    public void removeEffectsOfType(Class<? extends StatusEffect> type) {
+        activeEffects.removeIf(effect -> {
+            if (type.isInstance(effect)) {
+                effect.removeEffect(this); // revert changes
+                return true;
+            }
+            return false;
+        });
+    }
     
     public void updateEffects(){
         activeEffects.removeIf(effect -> {
@@ -67,6 +77,7 @@ public abstract class Combatant{
     public int getSpeed(){return speed;}
     public String getName(){return name;}
     public int getAttack(){return attack;}
+    public void setAttack(int attack){this.attack = attack;}
     public int getDefense(){return defense;}
     public void setDefense(int defense){this.defense = defense;}
     public int getHp(){return hp;}

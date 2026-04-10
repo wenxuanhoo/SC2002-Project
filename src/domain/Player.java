@@ -2,7 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import system.Item;
+import mechanics.Item;
 
 public abstract class Player extends Combatant {
     protected int cooldownTimer = 0;
@@ -40,7 +40,7 @@ public abstract class Player extends Combatant {
     public boolean hasItems(){
         return !inventory.isEmpty();
     }
-    public abstract void useSpecialSkill(List<Combatant> combatants);
-    public abstract void forceSpecialSkill(List<Combatant> combatants);
+    public abstract String useSpecialSkill(List<Combatant> combatants);
+    public abstract String forceSpecialSkill(List<Combatant> combatants);
     public abstract boolean isSpecialSkillAoE();
 }

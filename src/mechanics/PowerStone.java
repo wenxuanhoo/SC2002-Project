@@ -1,4 +1,4 @@
-package system;
+package mechanics;
 
 import domain.Combatant;
 import domain.Player;

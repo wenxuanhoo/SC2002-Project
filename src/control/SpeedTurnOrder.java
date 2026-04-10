@@ -13,21 +13,21 @@ public class SpeedTurnOrder implements TurnOrderStrategy {
     @Override
     public List<Combatant> determineTurnOrder(List<Combatant> combatants) {
         List<Combatant> turnQueue = new ArrayList<>(combatants); // new copy so we don't scramble the master list. 
-    turnQueue.sort(new Comparator<Combatant>()  { //sorts the list. Needs Comparator to know hot to compare two elements. 
-        /**
-         * anonymous class defined inline to be able to use the compare method
-         */
-        @Override
-        public int compare(Combatant c1, Combatant c2) {
+        turnQueue.sort(new Comparator<Combatant>()  { //sorts the list. Needs Comparator to know hot to compare two elements. 
             /**
-             * return: -1 if c1 < c2
-             * return: 0 if c1 == c2
-             * return +1 if c1 > c2
+             * anonymous class defined inline to be able to use the compare method
              */
-            return Integer.compare(c2.getSpeed(), c1.getSpeed());
-        }
-    });
-    return turnQueue;
+            @Override
+            public int compare(Combatant c1, Combatant c2) {
+                /**
+                 * return: -1 if c1 < c2
+                 * return: 0 if c1 == c2
+                 * return +1 if c1 > c2
+                 */
+                return Integer.compare(c2.getSpeed(), c1.getSpeed());
+            }
+        });
+        return turnQueue;
     }
 }
 

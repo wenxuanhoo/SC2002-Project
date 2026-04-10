@@ -41,13 +41,5 @@ public class LevelManager {
         }
         return backupPool;
     }
-    public boolean isInitialWaveDefeated() {
-        boolean allDefeated = true;
-        for (Enemy enemy:enemyPool) {
-            if (!enemy.isDefeated()) {
-                allDefeated = false;
-            }
-        }
-        return allDefeated;
-    }
+
 }

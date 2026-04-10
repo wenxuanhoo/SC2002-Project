@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Wizard extends Player{
-    private int bonusAttack = 0;
     public Wizard(String name){
         this.name = name;
         this.maxHp = 200;
@@ -16,9 +15,10 @@ public class Wizard extends Player{
     }
 
     @Override
-    public void performTurn(List<Combatant> combatants){
+    public String performTurn(List<Combatant> combatants){
         // Player turns are now managed by the Controller (BattleEngine) via UI loops
         // directly calling Action.execute(), decoupling Domain from Boundary!
+        return "";
     }
 
     @Override
@@ -26,45 +26,25 @@ public class Wizard extends Player{
         return true;
     }
 
-    private void performSpecialSkillLogic(List<Combatant> combatants) {
-        List<Combatant> enemies = combatants.stream()
-            .filter(c -> c instanceof Enemy && !c.isDefeated())
-            .collect(Collectors.toList());
-
-        arcaneBlast(enemies);
-    }
-
     @Override
-    public void useSpecialSkill(List<Combatant> combatants){
+    public String useSpecialSkill(List<Combatant> combatants){
         if (isCoolDownReady()){
-            performSpecialSkillLogic(combatants);
+            List<Combatant> enemies = combatants.stream()
+                .filter(c -> c instanceof Enemy && !c.isDefeated())
+                .collect(Collectors.toList());
+            String result = new mechanics.ArcaneBlastAction().execute(this, enemies);
             this.cooldownTimer = 3;
+            return result;
         } else {
-            System.out.println("Special skill is on cooldown!");
+            return "Special skill is on cooldown!";
         }
     }
     
     @Override
-    public void forceSpecialSkill(List<Combatant> combatants) {
-        performSpecialSkillLogic(combatants);
-        // cooldownTimer is NOT reset here
-    }
-    private void arcaneBlast(List<Combatant> enemies){
-        int currentAttack = this.attack + this.bonusAttack;
-        for (Combatant enemy : enemies){
-            int damage = Math.max(0, currentAttack - enemy.getDefense());
-            enemy.takeDamage(damage);
-            if (enemy.isDefeated()){
-                this.bonusAttack += 10;
-                System.out.println("Arcane Blast defeated " + enemy.getName() +"! Wizard Attack + 10.");
-            }
-        }
-    }
-    public int getBonusAttack(){
-        return bonusAttack;
-    }
-    @Override
-    public int getAttack(){
-        return this.attack + this.bonusAttack;
+    public String forceSpecialSkill(List<Combatant> combatants) {
+        List<Combatant> enemies = combatants.stream()
+            .filter(c -> c instanceof Enemy && !c.isDefeated())
+            .collect(Collectors.toList());
+        return new mechanics.ArcaneBlastAction().execute(this, enemies);
     }
 }

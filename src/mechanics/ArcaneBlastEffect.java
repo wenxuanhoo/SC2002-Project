@@ -1,24 +1,22 @@
-package system;
+package mechanics;
 
 import domain.Combatant;
 
-public class DefendEffect implements StatusEffect {
+public class ArcaneBlastEffect implements StatusEffect{
     private int remainingTurns;
 
-    public DefendEffect(int remainingTurns) {
+    public ArcaneBlastEffect(int remainingTurns){
         this.remainingTurns = remainingTurns;
     }
 
     @Override
     public void applyEffect(Combatant target){
-        // Add 10 to defense dynamically
-        target.setDefense(target.getDefense() + 10);
+        target.setAttack(target.getAttack() + 10);
     }
-    
+
     @Override
     public void removeEffect(Combatant target){
-        // Ensure to remove the 10 defense when the timer expires
-        target.setDefense(target.getDefense() - 10);
+        target.setAttack(target.getAttack() - 10);
     }
 
     @Override
@@ -28,7 +26,7 @@ public class DefendEffect implements StatusEffect {
 
     @Override
     public void decrementDuration(){
-        remainingTurns--; //decrease number of remaining turns by 1
+        remainingTurns--; 
     }
 
     @Override

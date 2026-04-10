@@ -1,28 +1,7 @@
 package boundary;
 
-import java.util.Scanner;
 
 public class BattleUIProcess {
-    private final Scanner sc = new Scanner(System.in);
-    //initialise new Scanner object
-
-        private int readIntInRange(String prompt, int min, int max) {
-        while (true) {
-            System.out.print(prompt);
-            String line = sc.nextLine().trim();
-
-            try {
-                int input = Integer.parseInt(line);
-                if (input >= min && input <= max) {
-                    return input;
-                }
-                System.out.println("Invalid number. Enter a number between " + min + " and " + max + '.');
-            } catch (NumberFormatException exception) {
-                System.out.println("Invalid number. Please enter an actual number.");
-            }
-        } 
-    } 
-    //copied from GameUISetup class, used locally under BattleUIProcess class
 
     public void showRounds(int roundNumber) {
         System.out.println("------ ROUND " + roundNumber + " ------");
@@ -61,22 +40,6 @@ public class BattleUIProcess {
     }
     //displays Enemies information line by line
 
-    public void showStatusEffects(String name, boolean isStunned, boolean isDefended, boolean isInvulnerable) {
-        boolean affected = isStunned || isDefended || isInvulnerable;
-        
-        if (affected) {
-            if (isStunned) {
-                System.out.println(name + "Stunned - cannot act in this turn");
-            }
-            if (isDefended) {
-                System.out.println("Defending - +10 defense");
-            }
-            if (isInvulnerable) {
-                System.out.println("Smoke Bomb active - immune to damage");
-            }
-            System.out.println();
-        }
-    }
     //display status effects if any
 
     public int chooseAction(boolean hasItems, boolean specialReady, int cooldown) {
@@ -97,18 +60,18 @@ public class BattleUIProcess {
         }
 
         System.out.println();
-        return readIntInRange("Enter Choice (1-4): ", 1, 4);
+        return InputHelper.readIntInRange("Enter Choice (1-4): ", 1, 4);
 
     }
     //displays option choices and proompts user to choose action
     
     public int chooseTarget(int enemyCount) {
-        return readIntInRange("Choose the target enemy (" + 1 + " to " + enemyCount + "): ", 1, enemyCount);
+        return InputHelper.readIntInRange("Choose the target enemy (" + 1 + " to " + enemyCount + "): ", 1, enemyCount);
     }
     //choose the enemy target by number
 
     public int chooseItem(int itemCount) {
-        return readIntInRange("Choose item (1 to " + itemCount + "): ", 1, itemCount);
+        return InputHelper.readIntInRange("Choose item (1 to " + itemCount + "): ", 1, itemCount);
     }
     //choose the item by number
 

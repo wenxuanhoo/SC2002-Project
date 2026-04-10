@@ -1,28 +1,12 @@
 package boundary;
 
-import java.util.Scanner;
+
+import domain.Warrior;
+import domain.Wizard;
+import domain.Goblin;
+import domain.Wolf;
 
 public class GameUISetup {
-    private final Scanner sc = new Scanner(System.in);
-    //initialise new scanner obj
-
-    private int ReadIntInRange(String prompt, int min, int max) {
-        while (true) {
-            System.out.print(prompt);
-            String line = sc.nextLine().trim();
-
-            try {
-                int input = Integer.parseInt(line);
-                if (input >= min && input <= max) {
-                    return input;
-                }
-                System.out.println("Invalid number. Enter a number between " + min + " and " + max + '.');
-            } catch (NumberFormatException exception) {
-                System.out.println("Invalid number. Please enter an ACTUAL number.");
-            }
-        } 
-    } 
-    // method that reads and checks whether an int matches the range given or not. If not it throws an exception
 
     public int choosePlayer() {
         System.out.println("-----------------------------------");
@@ -30,18 +14,20 @@ public class GameUISetup {
         System.out.println("-----------------------------------");
         System.out.println("Choose between two playable characters");
         System.out.println();
+        Warrior rw = new Warrior("Hero");
+        Wizard rwi = new Wizard("Hero");
         System.out.println("1. Warrior");
-        System.out.println("HP: 260 | Attack: 40 | Defense: 20 | Speed: 30");
+        System.out.println("HP: " + rw.getMaxHp() + " | Attack: " + rw.getAttack() + " | Defense: " + rw.getDefense() + " | Speed: " + rw.getSpeed());
         System.out.println("Special Skill: Shield Bash");
         System.out.println("BasicAttack damage to selected enemy. Selected enemy is unable to take actions for the current turn and the next turn.");
         System.out.println();
         System.out.println("2. Wizard");
-        System.out.println("HP: 200 | Attack: 50 | Defense: 10 | Speed: 20");
+        System.out.println("HP: " + rwi.getMaxHp() + " | Attack: " + rwi.getAttack() + " | Defense: " + rwi.getDefense() + " | Speed: " + rwi.getSpeed());
         System.out.println("Special Skill: Arcane Blast");
         System.out.println("BasicAttack damage to all enemies currently in combat. Each enemy defeated by Arcane Blast adds to to the Wizard's Attack, lasting until end of the level.");
         System.out.println();
         
-        return ReadIntInRange("Choose player (1 or 2): ", 1, 2);
+        return InputHelper.readIntInRange("Choose player (1 or 2): ", 1, 2);
     }
     // displays player character choices and make choice
 
@@ -60,8 +46,8 @@ public class GameUISetup {
         System.out.println();
 
         int[] itemChoices = new int[2];
-        itemChoices[0] = ReadIntInRange("Choose item 1 (1 to 3): ", 1, 3);
-        itemChoices[1] = ReadIntInRange("Choose item 2 (1 to 3): ", 1, 3);
+        itemChoices[0] = InputHelper.readIntInRange("Choose item 1 (1 to 3): ", 1, 3);
+        itemChoices[1] = InputHelper.readIntInRange("Choose item 2 (1 to 3): ", 1, 3);
 
         return itemChoices;
     }
@@ -91,16 +77,18 @@ public class GameUISetup {
         System.out.println("Backup Spawn: 1 Goblin, 2 Wolves");
         System.out.println();
 
-        return ReadIntInRange("Enter difficulty (1-3): ", 1, 3);
+        return InputHelper.readIntInRange("Enter difficulty (1-3): ", 1, 3);
     }
     // displays difficulty choices and choose difficulty
 
     private void showEnemyStats() {
+        Goblin g = new Goblin();
+        Wolf w = new Wolf();
         System.out.println("------------ENEMY STATS------------");
         System.out.println("Goblin: ");
-        System.out.println("HP: 55 | Attack: 35 | Defense: 15 | Speed: 25");
+        System.out.println("HP: " + g.getMaxHp() + " | Attack: " + g.getAttack() + " | Defense: " + g.getDefense() + " | Speed: " + g.getSpeed());
         System.out.println("Wolf: ");
-        System.out.println("HP: 40 | Attack: 45 | Defense: 5 | Speed: 35");
+        System.out.println("HP: " + w.getMaxHp() + " | Attack: " + w.getAttack() + " | Defense: " + w.getDefense() + " | Speed: " + w.getSpeed());
         System.out.println("                                   ");
     }
     // displays enemy information

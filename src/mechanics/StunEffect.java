@@ -1,22 +1,22 @@
-package system;
+package mechanics;
 
 import domain.Combatant;
 
-public class InvulnerabilityEffect implements StatusEffect{
+public class StunEffect implements StatusEffect{
     private int remainingTurns;
-    
-    public InvulnerabilityEffect(int remainingTurns){
+
+    public StunEffect(int remainingTurns){
         this.remainingTurns = remainingTurns;
     }
 
     @Override
     public void applyEffect(Combatant target){
-        target.setInvulnerable(true);
+        target.setStunned(true); // Alter the target's actual state
     }
-    
+
     @Override
     public void removeEffect(Combatant target){
-        target.setInvulnerable(false);
+        target.setStunned(false); // Revert the target's state when the effect expires
     }
 
     @Override
