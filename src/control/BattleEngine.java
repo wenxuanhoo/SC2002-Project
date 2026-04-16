@@ -78,11 +78,8 @@ public class BattleEngine {
     }
 
     private void handlePlayerTurn(Player player) {
-        int potions = 0, smokeBombs = 0;
-        for (Item item : player.getInventory()) {
-            if (item.getName().equals("Potion")) potions++;
-            else if (item.getName().equals("Smoke Bomb")) smokeBombs++;
-        }
+        int potions = player.countItemByName("Potion");
+        int smokeBombs = player.countItemByName("Smoke Bomb");
         
         List<Combatant> aliveEnemies = new ArrayList<>();
         for (Combatant c : activeCombatants) {

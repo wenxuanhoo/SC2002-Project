@@ -2,35 +2,19 @@ package mechanics;
 
 import domain.Combatant;
 
-public class StunEffect implements StatusEffect{
-    private int remainingTurns;
+public class StunEffect extends StatusEffect {
 
-    public StunEffect(int remainingTurns){
-        this.remainingTurns = remainingTurns;
+    public StunEffect(int remainingTurns) {
+        super(remainingTurns);
     }
 
     @Override
-    public void applyEffect(Combatant target){
+    public void applyEffect(Combatant target) {
         target.setStunned(true); // Alter the target's actual state
     }
 
     @Override
-    public void removeEffect(Combatant target){
+    public void removeEffect(Combatant target) {
         target.setStunned(false); // Revert the target's state when the effect expires
-    }
-
-    @Override
-    public int getRemainingTurns(){
-        return remainingTurns;
-    }
-
-    @Override
-    public void decrementDuration(){
-        remainingTurns--; //decrease number of remaining turns by 1
-    }
-
-    @Override
-    public boolean isExpired(){
-        return remainingTurns <= 0; //check if remaining turns is less than or equal to 0
     }
 }

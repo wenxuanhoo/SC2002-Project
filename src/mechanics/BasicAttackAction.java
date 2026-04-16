@@ -3,13 +3,12 @@ package mechanics;
 import domain.Combatant;
 import java.util.List;
 
-public class BasicAttackAction implements Action{
+public class BasicAttackAction extends Action {
     @Override
     public String execute(Combatant user, List<Combatant> targets){ //targets are chosen in boundary layer
         //validate that target has been chosen
-        if (user == null || targets == null || targets.isEmpty()){
-            return user != null ? user.getName() + " has no target." : "No user for action.";
-        }
+        String error = validateInputs(user, targets);
+        if (error != null) return error;
         //get target for basic attack
         Combatant target = targets.get(0);
         if (target == null || target.isDefeated()){

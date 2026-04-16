@@ -9,7 +9,6 @@ import domain.Warrior;
 import domain.Wizard;
 import domain.Combatant;
 import domain.Enemy;
-import mechanics.Item;
 import mechanics.Potion;
 import mechanics.PowerStone;
 import mechanics.SmokeBomb;
@@ -102,12 +101,10 @@ public class Main {
     }
 
     private static int[] countItems(Player player) {
-        int p = 0, s = 0, pw = 0;
-        for (Item item : player.getInventory()) {
-            if (item.getName().equals("Potion")) p++;
-            else if (item.getName().equals("Smoke Bomb")) s++;
-            else if (item.getName().equals("Power Stone")) pw++;
-        }
-        return new int[]{p, s, pw};
+        return new int[]{
+            player.countItemByName("Potion"),
+            player.countItemByName("Smoke Bomb"),
+            player.countItemByName("Power Stone")
+        };
     }
 }

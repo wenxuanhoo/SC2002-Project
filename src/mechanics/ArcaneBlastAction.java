@@ -3,12 +3,11 @@ package mechanics;
 import domain.Combatant;
 import java.util.List;
 
-public class ArcaneBlastAction implements Action {
+public class ArcaneBlastAction extends Action {
     @Override
     public String execute(Combatant user, List<Combatant> targets) {
-        if (user == null || targets == null || targets.isEmpty()){
-            return user != null ? user.getName() + " has no targets." : "No user for action.";
-        }
+        String error = validateInputs(user, targets);
+        if (error != null) return error;
         
         StringBuilder sb = new StringBuilder(user.getName() + " uses Arcane Blast hit everyone!");
         int snapshotAttack = user.getAttack(); // Snapshot attack BEFORE the loop so all enemies take the same damage

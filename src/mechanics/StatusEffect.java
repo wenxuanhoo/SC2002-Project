@@ -2,10 +2,25 @@ package mechanics;
 
 import domain.Combatant;
 
-public interface StatusEffect{
-    void applyEffect(Combatant target);
-    void removeEffect(Combatant target);
-    int getRemainingTurns();
-    void decrementDuration();
-    boolean isExpired();
+public abstract class StatusEffect {
+    private int remainingTurns;
+
+    protected StatusEffect(int remainingTurns) {
+        this.remainingTurns = remainingTurns;
+    }
+
+    public abstract void applyEffect(Combatant target);
+    public abstract void removeEffect(Combatant target);
+
+    public int getRemainingTurns() {
+        return remainingTurns;
+    }
+
+    public void decrementDuration() {
+        remainingTurns--;
+    }
+
+    public boolean isExpired() {
+        return remainingTurns <= 0;
+    }
 }

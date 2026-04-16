@@ -3,12 +3,11 @@ package mechanics;
 import domain.Combatant;
 import java.util.List;
 
-public class ShieldBashAction implements Action {
+public class ShieldBashAction extends Action {
     @Override
     public String execute(Combatant user, List<Combatant> targets) {
-        if (user == null || targets == null || targets.isEmpty()){
-            return user != null ? user.getName() + " has no target." : "No user for action.";
-        }
+        String error = validateInputs(user, targets);
+        if (error != null) return error;
         Combatant target = targets.get(0);
         if (target == null || target.isDefeated()){
             return user.getName() + " has no target.";

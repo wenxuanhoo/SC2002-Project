@@ -3,7 +3,7 @@ package mechanics;
 import domain.Combatant;
 import java.util.List;
 
-public class DefendAction implements Action {
+public class DefendAction extends Action {
     @Override
     public String execute(Combatant user, List<Combatant> targets) {
         if (user == null) {

@@ -40,6 +40,19 @@ public abstract class Player extends Combatant {
     public boolean hasItems(){
         return !inventory.isEmpty();
     }
+    @Override
+    public String performTurn(List<Combatant> combatants) {
+        // Player turns are managed by the Controller (BattleEngine) via UI loops
+        // directly calling Action.execute(), decoupling Domain from Boundary
+        return "";
+    }
+    public int countItemByName(String name) {
+        int count = 0;
+        for (Item item : inventory) {
+            if (item.getName().equals(name)) count++;
+        }
+        return count;
+    }
     public abstract String useSpecialSkill(List<Combatant> combatants);
     public abstract String forceSpecialSkill(List<Combatant> combatants);
     public abstract boolean isSpecialSkillAoE();

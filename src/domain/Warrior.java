@@ -12,13 +12,6 @@ public class Warrior extends Player{
         this.speed = 30;
     }
     @Override
-    public String performTurn(List<Combatant> combatants){
-        // Player turns are now managed by the Controller (BattleEngine) via UI loops
-        // directly calling Action.execute(), decoupling Domain from Boundary!
-        return "";
-    }
-    
-    @Override
     public boolean isSpecialSkillAoE() {
         return false;
     }
